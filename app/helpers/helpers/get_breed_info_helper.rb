@@ -1,7 +1,7 @@
 require 'redis'
 
-module Helpers
-  class BreedInfoHelper
+ module Helpers
+  class GetBreedInfoHelper
     REDIS_NAMESPACE = 'dog_breeds'
 
     def self.get_breed_info(breed_name)
@@ -23,4 +23,5 @@ module Helpers
       nil
     end
   end
+ end
 end
