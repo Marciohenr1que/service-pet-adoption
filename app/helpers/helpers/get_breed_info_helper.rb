@@ -22,4 +22,4 @@ require 'redis'
       nil
     end
   end
-end
+
