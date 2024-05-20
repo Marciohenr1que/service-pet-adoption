@@ -1,5 +1,0 @@
-read_api_worker_job:
-  cron: '0 12 * * *'
-  class: ReadApiWorker
-  queue: default
-
