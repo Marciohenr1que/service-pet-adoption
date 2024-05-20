@@ -6,7 +6,7 @@ module Integrations
         breed = find_breed(response, breed_name)
         return {} unless breed
 
-        DogApi::Helpers::BreedInfoHelper.parse_breed_info(breed['attributes'])
+        Integrations::DogApi::BreedInfoHelper.parse_breed_info(breed['attributes'])
       end
 
       def self.fetch_breeds

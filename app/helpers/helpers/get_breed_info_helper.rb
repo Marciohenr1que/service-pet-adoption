@@ -1,6 +1,5 @@
 require 'redis'
 
-module Helpers
   class GetBreedInfoHelper
     REDIS_NAMESPACE = 'dog_breeds'
 
