@@ -9,8 +9,6 @@ class PetsService
     pet
   end
 
-  private
-
   def self.add_breed_info(pet)
     breed_info = Integrations::DogApi::BreedInfoService.get_breed_info(pet.breed)
     if breed_info.present? && breed_info[:breed].casecmp?(pet.breed)

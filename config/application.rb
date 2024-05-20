@@ -10,6 +10,7 @@ module PetAdoption
 
     # Load custom code from the lib directory
     config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths += %W(#{config.root}/app/helpers #{config.root}/app/services)
 
     # Configure Active Job to use Sidekiq as the queue adapter
     config.active_job.queue_adapter = :sidekiq

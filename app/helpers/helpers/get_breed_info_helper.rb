@@ -1,4 +1,3 @@
-require 'redis'
 
   class GetBreedInfoHelper
     REDIS_NAMESPACE = 'dog_breeds'
@@ -22,4 +21,7 @@ require 'redis'
       nil
     end
   end
+end
+
+
 

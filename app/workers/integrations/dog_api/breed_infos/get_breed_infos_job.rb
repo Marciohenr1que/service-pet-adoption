@@ -41,5 +41,3 @@ module Integrations
     end
   end
 end
-
-
