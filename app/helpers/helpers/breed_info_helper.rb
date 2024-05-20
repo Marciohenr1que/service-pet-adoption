@@ -5,7 +5,7 @@ module Helpers
     REDIS_NAMESPACE = 'dog_breeds'
 
     def self.get_breed_info(breed_name)
-      redis = Redis.new(url: 'rediss://red-cp4egei1hbls73f0gic0:XdtJb5cUIw2kQHtb0Hre6BlGutklcUC4@oregon-redis.render.com:6379')
+      redis = Redis.new(url: 'rediss://red-cp5nvsa1hbls73fj3ssg:9ocnNmDZK6fPz4UChUI3wfF8AukSP0oU@virginia-redis.render.com:6379')
       breed_key = "#{REDIS_NAMESPACE}:#{breed_name}"
       redis.hgetall(breed_key)
     end

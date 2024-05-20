@@ -1,6 +1,5 @@
 # config/initializers/redis.rb
 
-# Carregue a biblioteca Redis
 require 'redis'
 
 # Crie uma nova instância do cliente Redis
