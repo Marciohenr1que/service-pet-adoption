@@ -12,6 +12,6 @@ module Integrations
           }
         end
       end
-    end
   end
 end
+
