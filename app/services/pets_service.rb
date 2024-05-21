@@ -12,7 +12,7 @@
         end
 
         def self.add_breed_info(pet)
-          breed_info = Integrations::DogApi::Helpers::BreedInfoService.get_breed_info(pet.breed)
+          breed_info = Integrations::DogApi::BreedInfoService.get_breed_info(pet.breed)
           if breed_info.present? && breed_info[:breed].casecmp?(pet.breed)
             pet.define_singleton_method(:breed_info) { breed_info }
           else
