@@ -18,8 +18,8 @@ module Integrations
           breeds = JSON.parse(response.body)['data']
 
           breeds.each do |breed|
-            breed_info = Helpers::BreedInfoHelper.parse_breed_info(breed['attributes'])
-            dog_api_breed_info = Integrations::DogApi::Helpers::BreedInfoHelper.parse_breed_info(breed['attributes'])
+            breed_info = BreedInfoHelper.parse_breed_info(breed['attributes'])
+            dog_api_breed_info = Integrations::DogApi::BreedInfoHelper.parse_breed_info(breed['attributes'])
 
             next unless breed_info.present?
 
