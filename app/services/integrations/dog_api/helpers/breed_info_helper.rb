@@ -1,5 +1,6 @@
 module Integrations
   module DogApi
+    module Helpers
     class BreedInfoHelper
       def self.parse_breed_info(attributes)
         {
@@ -12,4 +13,5 @@ module Integrations
       end
     end
   end
+end
 end

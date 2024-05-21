@@ -1,3 +1,4 @@
+
 class PetsController < ApplicationController
   before_action :set_pet, only: [:update, :destroy, :update_weight, :show]
 

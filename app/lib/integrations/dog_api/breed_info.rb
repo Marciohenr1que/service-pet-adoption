@@ -1,3 +1,4 @@
+
 module Integrations
   module DogApi
     class BreedInfo
