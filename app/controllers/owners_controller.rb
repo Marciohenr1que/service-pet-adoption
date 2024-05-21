@@ -1,16 +1,17 @@
 class OwnersController < ApplicationController
+  before_action :set_owner, only: [:show, :update]
+
   def index
-    @owners = Owner.includes(:pets).all
+    @owners = owner_repository.all
     render json: @owners
   end
 
   def show
-    @owner = Owner.includes(:pets).find(params[:id])
     render json: @owner
   end
 
   def create
-    @owner = Owner.new(owner_params)
+    @owner = owner_repository.create(owner_params)
 
     if @owner.save
       render json: @owner, status: :created
@@ -20,7 +21,7 @@ class OwnersController < ApplicationController
   end
 
   def update
-    if @owner.update(owner_params)
+    if owner_repository.update(@owner, owner_params)
       render json: @owner
     else
       render json: @owner.errors, status: :unprocessable_entity
@@ -29,7 +30,15 @@ class OwnersController < ApplicationController
 
   private
 
+  def set_owner
+    @owner = owner_repository.find(params[:id])
+  end
+
   def owner_params
     params.require(:owner).permit(:name, :email, :phone)
+  end
+
+  def owner_repository
+    @owner_repository ||= OwnerRepository.new
   end
 end

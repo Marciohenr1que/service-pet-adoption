@@ -13,44 +13,44 @@ class PetsController < ApplicationController
   end
 
   def create
-    @pet = Pet.new(pet_params)
+    @pet = PetRepository.create(pet_params)
 
     if @pet.save
       pet = PetsService.pet_with_details(@pet)
       render json: pet, serializer: PetSerializer, status: :created
     else
-      render json: @pet.errors, status: :unprocessable_entity
+      render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
-    if @pet.update(pet_params)
+    if PetRepository.update(@pet, pet_params)
       pet = PetsService.pet_with_details(@pet)
       render json: pet, serializer: PetSerializer
     else
-      render json: @pet.errors, status: :unprocessable_entity
+      render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update_weight
-    new_weight = params[:weight]
+    new_weight = params.require(:weight)
     if @pet.update_weight(new_weight)
       pet = PetsService.pet_with_details(@pet)
       render json: pet, serializer: PetSerializer
     else
-      render json: @pet.errors, status: :unprocessable_entity
+      render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @pet.destroy
+    PetRepository.destroy(@pet)
     render json: { message: 'Pet deleted successfully' }, status: :ok
   end
 
   private
 
   def set_pet
-    @pet = Pet.find(params[:id])
+    @pet = PetRepository.find(params[:id])
   end
 
   def pet_params

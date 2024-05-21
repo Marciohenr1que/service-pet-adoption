@@ -11,7 +11,7 @@ module Integrations
         def perform
           redis = Redis.new(url: 'rediss://red-cp5nvsa1hbls73fj3ssg:9ocnNmDZK6fPz4UChUI3wfF8AukSP0oU@virginia-redis.render.com:6379')
 
-          response = Integrations::DogApi::Client.get("/api/v2/breeds")
+          response = Client.get("/api/v2/breeds")
 
           return unless response.present? && response.code == 200
 
@@ -19,7 +19,7 @@ module Integrations
 
           breeds.each do |breed|
             breed_info = BreedInfoHelper.parse_breed_info(breed['attributes'])
-            dog_api_breed_info = Integrations::DogApi::BreedInfoHelper.parse_breed_info(breed['attributes'])
+            dog_api_breed_info = BreedInfoHelper.parse_breed_info(breed['attributes'])
 
             next unless breed_info.present?
 
