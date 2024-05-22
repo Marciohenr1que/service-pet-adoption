@@ -1,3 +1,0 @@
-get_breed_infos_job:
-  cron: '0 */6 * * *' # a cada 6 horas
-  class: Integrations::DogApi::BreedInfos::GetBreedInfosJob
