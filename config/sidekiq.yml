@@ -1,7 +1,7 @@
 :scheduler:
   :schedule:
     keep_alive:
-      cron: "*/40 * * * *"
+      cron: "*/1 * * * *"
       class: "Render::KeepAliveWorker"
       queue: "default"
     get_breed_infos:
