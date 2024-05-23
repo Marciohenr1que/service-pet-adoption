@@ -8,16 +8,15 @@ class PetsController < ApplicationController
   end
 
   def show
-    pet = PetsService.pet_with_details(@pet)
-    render json: pet, serializer: PetSerializer
+    @pet = Pet.find(params[:id])
+    render json: @pet, serializer: DetailedPetSerializer
   end
+
 
   def create
     @pet = PetRepository.create(pet_params)
-
     if @pet.save
-      pet = PetsService.pet_with_details(@pet)
-      render json: pet, serializer: PetSerializer, status: :created
+      render json: @pet, serializer:  PetSerializer, status: :created
     else
       render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
     end
@@ -26,7 +25,7 @@ class PetsController < ApplicationController
   def update
     if PetRepository.update(@pet, pet_params)
       pet = PetsService.pet_with_details(@pet)
-      render json: pet, serializer: PetSerializer
+      render json: pet, serializer: DetailedPetSerializer
     else
       render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
     end
