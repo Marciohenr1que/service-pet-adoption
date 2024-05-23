@@ -9,6 +9,8 @@ class PetsController < ApplicationController
 
   def show
     @pet = Pet.find(params[:id])
+
+    Integrations::DogApi::BreedInfos::GetBreedInfosJob.perform_async(@pet.breed)
     render json: @pet, serializer: DetailedPetSerializer
   end
 
