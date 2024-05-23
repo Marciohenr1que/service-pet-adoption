@@ -8,39 +8,32 @@ module Integrations
 
         REDIS_NAMESPACE = 'dog_breeds'
 
-        def perform
-          redis = Redis.new(url: 'rediss://red-cp5nvsa1hbls73fj3ssg:9ocnNmDZK6fPz4UChUI3wfF8AukSP0oU@virginia-redis.render.com:6379')
-          logger = Rails.logger # Define o objeto logger
+        def perform(breed_name)
+          redis = Redis.new(url: ENV['REDIS_URL'])
+          logger = Rails.logger
 
-          response = Client.get("/api/v2/breeds")
+          # raça utilizando o serviço BreedInfoService
+          breed_info = BreedInfoService.get_breed_info(breed_name)
 
-          if response.present? && response.code == 200
-            breeds = JSON.parse(response.body)['data']
+          if breed_info.present?
+            # Define a chave no Redis
+            breed_key = "#{REDIS_NAMESPACE}:#{breed_info[:breed]}"
 
-            breeds.each do |breed|
-              begin
-                breed_info = BreedInfoHelper.parse_breed_info(breed['attributes'])
-                dog_api_breed_info = BreedInfoHelper.parse_breed_info(breed['attributes'])
-
-                next unless breed_info.present?
-
-                breed_key = "#{REDIS_NAMESPACE}:#{breed_info[:breed]}"
-
-                redis.hmset(
-                  breed_key,
-                  'name', breed_info[:breed],
-                  'description', breed_info[:description],
-                  'life_span', dog_api_breed_info[:life_span],
-                  'male_weight', dog_api_breed_info[:male_weight],
-                  'female_weight', dog_api_breed_info[:female_weight]
-                )
-              rescue StandardError => e
-                logger.error "Failed to process breed #{breed['attributes']['name']}: #{e.message}"
-              end
-            end
+            # Armazena as informações da raça no Redis usando um hash
+            redis.hmset(
+              breed_key,
+              'name', breed_info[:breed],
+              'description', breed_info[:description],
+              'life_span', breed_info[:life_span],
+              'male_weight', breed_info[:male_weight],
+              'female_weight', breed_info[:female_weight]
+            )
           else
-            logger.error "Failed to fetch dog breeds: #{response.code}"
+            # Loga
+            logger.error "Failed to fetch breed info for #{breed_name}"
           end
+        rescue StandardError => e
+          logger.error "An error occurred: #{e.message}"
         end
       end
     end

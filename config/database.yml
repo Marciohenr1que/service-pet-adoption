@@ -5,9 +5,9 @@ default: &default
 
 development:
   <<: *default
-  database: postgres
-  username: postgres
-  password: 1234
+  database: <%= ENV['DEVELOPMENT_DB_NAME'] %>
+  username: <%= ENV['DEVELOPMENT_DB_USERNAME'] %>
+  password: <%= ENV['DEVELOPMENT_DB_PASSWORD'] %>
   host: <%= ENV['DEVELOPMENT_DB_HOST'] %>
   port: <%= ENV['DEVELOPMENT_DB_PORT'] %>
 
@@ -21,8 +21,8 @@ production:
 
 test:
   <<: *default
-  database: postgres
-  username: postgres
-  password: 1234
+  database: <%= ENV['DEVELOPMENT_DB_NAME'] %>
+  username: <%= ENV['DEVELOPMENT_DB_USERNAME'] %>
+  password: <%= ENV['DEVELOPMENT_DB_PASSWORD'] %>
   host: <%= ENV['DEVELOPMENT_DB_HOST'] %>
   port: <%= ENV['DEVELOPMENT_DB_PORT'] %>

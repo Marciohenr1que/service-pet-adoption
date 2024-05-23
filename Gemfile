@@ -32,6 +32,7 @@ gem "bootsnap", require: false
 gem 'redis'
 gem 'sidekiq'
 gem 'foreman'
+gem 'cloudinary'
 gem 'rubocop', require: false
 gem 'dotenv-rails'
 gem 'active_model_serializers'
