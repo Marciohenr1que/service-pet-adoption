@@ -1,4 +1,3 @@
-
 class PetsController < ApplicationController
   before_action :set_pet, only: [:update, :destroy, :update_weight, :show]
 
@@ -9,16 +8,20 @@ class PetsController < ApplicationController
 
   def show
     @pet = Pet.find(params[:id])
+    breed_info = PetsService.get_breed_info(@pet.breed)
 
-    Integrations::DogApi::BreedInfos::GetBreedInfosJob.perform_async(@pet.breed)
-    render json: @pet, serializer: DetailedPetSerializer
+    if breed_info && !breed_info.empty? # Verifica se breed_info não é nulo e não está vazio
+      @pet.breed_info_temp = breed_info # Armazena temporariamente as informações da raça no objeto @pet
+      render json: @pet
+    else
+      render json: { error: "Failed to fetch or empty breed information for pet's breed" }, status: :unprocessable_entity
+    end
   end
-
 
   def create
     @pet = PetRepository.create(pet_params)
     if @pet.save
-      render json: @pet, serializer:  PetSerializer, status: :created
+      render json: @pet, serializer: PetSerializer, status: :created
     else
       render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
     end

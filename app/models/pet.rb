@@ -3,12 +3,8 @@ class Pet < ApplicationRecord
   include PetValidatable
   belongs_to :owner
 
-
   def update_weight(new_weight)
     update(weight: new_weight)
   end
-
-  def breed_info
-    @breed_info ||= Integrations::DogApi::BreedInfoService.get_breed_info(breed) || {}
-  end
+  attr_accessor :breed_info_temp
 end

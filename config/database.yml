@@ -3,7 +3,7 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-development:
+production:
   <<: *default
   database: postgres
   username: postgres
@@ -11,7 +11,7 @@ development:
   host: <%= ENV['DEVELOPMENT_DB_HOST'] %>
   port: <%= ENV['DEVELOPMENT_DB_PORT'] %>
 
-production:
+development:
   <<: *default
   database: <%= ENV['PRODUCTION_DB_NAME'] %>
   username: <%= ENV['PRODUCTION_DB_USERNAME'] %>
