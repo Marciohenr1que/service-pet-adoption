@@ -13,9 +13,9 @@ production:
 
 development:
   <<: *default
-  database: <%= ENV['PRODUCTION_DB_NAME'] %>
-  username: <%= ENV['PRODUCTION_DB_USERNAME'] %>
-  password: <%= ENV['PRODUCTION_DB_PASSWORD'] %>
+  database: postgres
+  username: postgres
+  password: 1234
   host: <%= ENV['PRODUCTION_DB_HOST'] %>
   port: <%= ENV['PRODUCTION_DB_PORT'] %>
 

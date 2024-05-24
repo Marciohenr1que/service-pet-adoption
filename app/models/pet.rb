@@ -6,5 +6,5 @@ class Pet < ApplicationRecord
   def update_weight(new_weight)
     update(weight: new_weight)
   end
-  attr_accessor :breed_info_temp
+ 
 end

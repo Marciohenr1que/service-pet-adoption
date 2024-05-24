@@ -8,15 +8,21 @@ class PetsController < ApplicationController
 
   def show
     @pet = Pet.find(params[:id])
-    breed_info = PetsService.get_breed_info(@pet.breed)
-
-    if breed_info && !breed_info.empty? # Verifica se breed_info não é nulo e não está vazio
-      @pet.breed_info_temp = breed_info # Armazena temporariamente as informações da raça no objeto @pet
-      render json: @pet
+    
+    if @pet.breed_info_temp_name.present?
+      render json: @pet, serializer: PetSerializer
     else
-      render json: { error: "Failed to fetch or empty breed information for pet's breed" }, status: :unprocessable_entity
+      breed_info = Integrations::DogApi::BreedInfos::ExternalApiWorker.perform_async(@pet.breed, @pet.id)
+      
+      if breed_info && !breed_info.empty?
+        @pet.update(breed_info_temp_name: breed_info[:name], breed_info_temp_description: breed_info[:description])
+        render json: @pet, serializer: PetSerializer
+      else
+        # Trate o caso em que não há informações de raça disponíveis
+      end
     end
   end
+  
 
   def create
     @pet = PetRepository.create(pet_params)

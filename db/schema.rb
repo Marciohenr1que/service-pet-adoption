@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_19_122403) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_24_192758) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_19_122403) do
     t.bigint "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "breed_info_temp_name"
+    t.text "breed_info_temp_description"
     t.index ["owner_id"], name: "index_pets_on_owner_id"
   end
 
