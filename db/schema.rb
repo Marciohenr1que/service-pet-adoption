@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_19_122403) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_25_125034) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "adminpack"
   enable_extension "plpgsql"
 
   create_table "breed_infos", force: :cascade do |t|
@@ -20,6 +21,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_19_122403) do
     t.string "life_span"
     t.float "male_weight"
     t.float "female_weight"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "breeds", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

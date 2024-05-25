@@ -7,7 +7,7 @@ development:
   <<: *default
   database: postgres
   username: postgres
-  password: 1234
+  password: admin
   host: <%= ENV['DEVELOPMENT_DB_HOST'] %>
   port: <%= ENV['DEVELOPMENT_DB_PORT'] %>
 
@@ -23,6 +23,6 @@ test:
   <<: *default
   database: postgres
   username: postgres
-  password: 1234
+  password: admin
   host: <%= ENV['DEVELOPMENT_DB_HOST'] %>
   port: <%= ENV['DEVELOPMENT_DB_PORT'] %>

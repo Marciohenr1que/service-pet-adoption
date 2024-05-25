@@ -1,3 +1,3 @@
 class PetSerializer < ActiveModel::Serializer
-    attributes :name, :pet_type, :breed, :weight
+    attributes :id, :name, :breed, :pet_type, :weight
   end

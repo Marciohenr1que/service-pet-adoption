@@ -4,3 +4,7 @@
       cron: "*/1 * * * *"
       class: "Render::KeepAliveWorker"
       queue: "default"
+    get_breed_infos:
+      cron: "0 0 * * *" 
+      class: "Integrations::DogApi::BreedInfos::GetBreedInfosJob"
+      queue: "default"

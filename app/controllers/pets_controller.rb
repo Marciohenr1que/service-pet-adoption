@@ -1,57 +1,51 @@
 
 class PetsController < ApplicationController
-  before_action :set_pet, only: [:update, :destroy, :update_weight, :show]
+  before_action :set_pet, only: [:destroy, :update, :show]
 
   def index
-    pets = PetsService.all_pets_with_details
+    pets = Integrations::PetsIntegration::PetService.fetch_all
     render json: pets, each_serializer: PetSerializer
   end
 
   def show
-    @pet = Pet.find(params[:id])
-
-    Integrations::DogApi::BreedInfos::GetBreedInfosJob.perform_async(@pet.breed)
-    render json: @pet, serializer: DetailedPetSerializer
+    breed_info = Integrations::PetsIntegration::PetService.fetch_breed_info(@pet.breed)
+    
+    if breed_info
+      render json: { pet: @pet, breed_description: breed_info.description }
+    else
+      render json: { pet: @pet, breed_description: "Não temos informações sobre esta raça." }
+    end
   end
 
-
   def create
-    @pet = PetRepository.create(pet_params)
-    if @pet.save
-      render json: @pet, serializer:  PetSerializer, status: :created
+    result = Integrations::PetsIntegration::PetService.create(pet_params)
+
+    if result[:success]
+      render json: result[:pet], serializer: PetSerializer, status: :created
     else
-      render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_entity
     end
   end
 
   def update
-    if PetRepository.update(@pet, pet_params)
-      pet = PetsService.pet_with_details(@pet)
-      render json: pet, serializer: DetailedPetSerializer
-    else
-      render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
+    result = Integrations::PetsIntegration::PetService.update_weight(@pet, pet_params[:weight])
 
-  def update_weight
-    new_weight = params.require(:weight)
-    if @pet.update_weight(new_weight)
-      pet = PetsService.pet_with_details(@pet)
-      render json: pet, serializer: PetSerializer
+    if result[:success]
+      render json: result[:pet], serializer: PetSerializer, status: :ok
     else
-      render json: { errors: @pet.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    PetRepository.destroy(@pet)
+    Integrations::PetsIntegration::PetService.destroy(@pet)
     render json: { message: 'Pet deleted successfully' }, status: :ok
   end
 
   private
 
   def set_pet
-    @pet = PetRepository.find(params[:id])
+    @pet = Integrations::PetsIntegration::PetService.find(params[:id])
   end
 
   def pet_params

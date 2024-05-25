@@ -2,43 +2,54 @@ class OwnersController < ApplicationController
   before_action :set_owner, only: [:show, :update]
 
   def index
-    @owners = owner_repository.all
-    render json: @owners
+    owners = owner_service.fetch_all
+    render json: owners, each_serializer: OwnerSerializer
   end
 
   def show
-    render json: @owner
+    render json: @owner, serializer: OwnerSerializer
   end
 
   def create
-    @owner = owner_repository.create(owner_params)
+    result = owner_service.create(owner_params)
 
-    if @owner.save
-      render json: @owner, status: :created
+    if result[:success]
+      render json: result[:owner], serializer: OwnerSerializer, status: :created
     else
-      render json: @owner.errors, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_entity
     end
   end
 
   def update
-    if owner_repository.update(@owner, owner_params)
-      render json: @owner
+    result = owner_service.update(@owner, owner_params)
+
+    if result[:success]
+      render json: result[:owner], serializer: OwnerSerializer
     else
-      render json: @owner.errors, status: :unprocessable_entity
+      render json: { errors: result[:errors] }, status: :unprocessable_entity
+    end
+  end
+  def destroy
+    result = owner_service.update(@owner, owner_params)
+
+    if result[:success]
+      render json: result[:owner], serializer: OwnerSerializer
+    else
+      render json: { errors: result[:errors] }, status: :unprocessable_entity
     end
   end
 
   private
 
   def set_owner
-    @owner = owner_repository.find(params[:id])
+    @owner = owner_service.find(params[:id])
   end
 
   def owner_params
     params.require(:owner).permit(:name, :email, :phone)
   end
 
-  def owner_repository
-    @owner_repository ||= OwnerRepository.new
+  def owner_service
+    @owner_service ||= Integrations::OwnersIntegration::OwnerService.new
   end
 end
