@@ -1,6 +1,6 @@
 class CreateBreeds < ActiveRecord::Migration[7.1]
   def change
-    create_table :breeds do |t|
+    create_table :breed_infos do |t|
       t.string :name
       t.text :description
 

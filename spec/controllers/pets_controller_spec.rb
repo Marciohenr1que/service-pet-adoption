@@ -33,7 +33,7 @@ RSpec.describe PetsController, type: :controller do
     describe 'PUT #update' do
       it 'updates the pet' do
         owner = Owner.create(name: 'marcio', email: 'john@example.com', phone: '1234567890')
-        pet = Pet.create(name: 'renato', pet_type: 'Dog', breed: 'Poodle', weight: 20, owner_id: owner.id)
+        pet = Pet.create(name: 'nina', pet_type: 'Dog', breed: 'Poodle', weight: 20, owner_id: owner.id)
         put :update, params: { id: pet.id, pet: { name: 'nina' } }
         expect(pet.reload.name).to eq('nina')
       end

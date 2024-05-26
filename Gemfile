@@ -50,6 +50,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rswag-specs'
   gem 'factory_bot_rails'
+  gem 'shoulda-matchers', '~> 5.0'
+  gem 'database_cleaner'
 end
 
 group :development do

@@ -32,7 +32,7 @@ class PetService
     end
   
     def self.fetch_breed_info(breed_name)
-      Breed.find_by(name: breed_name)
+      BreedInfo.find_by(name: breed_name)
     end
   end
 
