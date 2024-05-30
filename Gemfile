@@ -51,7 +51,7 @@ group :development, :test do
   gem 'rswag-specs'
   gem 'factory_bot_rails'
   gem 'shoulda-matchers', '~> 5.0'
-  gem 'database_cleaner'
+  gem 'annotate'
 end
 
 group :development do

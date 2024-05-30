@@ -1,5 +1,5 @@
 module Integrations
-  module OwnersIntegration
+  module Owners
     class OwnerService
       def initialize(repository = OwnerRepository.new)
         @repository = repository
@@ -23,15 +23,16 @@ module Integrations
       end
 
       def update(owner, params)
-        if @repository.update(owner, params)
+        if owner.update(params)
           { success: true, owner: owner }
         else
           { success: false, errors: owner.errors.full_messages }
         end
       end
-      def destroy(owner, params)
-        if @repository.update(owner, params)
-          { success: true, owner: owner }
+
+      def destroy(owner)
+        if owner.destroy
+          { success: true }
         else
           { success: false, errors: owner.errors.full_messages }
         end

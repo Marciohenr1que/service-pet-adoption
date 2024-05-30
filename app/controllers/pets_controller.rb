@@ -1,24 +1,23 @@
-
 class PetsController < ApplicationController
   before_action :set_pet, only: [:destroy, :update, :show]
 
   def index
-    pets = Integrations::PetsIntegration::PetService.fetch_all
+    pets = Integrations::Pets::PetService.fetch_all
     render json: pets, each_serializer: PetSerializer
   end
 
   def show
-    breed_info = Integrations::PetsIntegration::PetService.fetch_breed_info(@pet.breed)
-    
+    breed_info = Integrations::Pets::PetService.fetch_breed_info(@pet.breed)
+
     if breed_info
       render json: { pet: @pet, breed_description: breed_info.description }
     else
-      render json: { pet: @pet, breed_description: "Não temos informações sobre esta raça." }
+      render json: { pet: @pet, breed_description: I18n.t('pets.messages.breed_info_missing') }
     end
   end
 
   def create
-    result = Integrations::PetsIntegration::PetService.create(pet_params)
+    result = Integrations::Pets::PetService.create(pet_params)
 
     if result[:success]
       render json: result[:pet], serializer: PetSerializer, status: :created
@@ -28,7 +27,7 @@ class PetsController < ApplicationController
   end
 
   def update
-    result = Integrations::PetsIntegration::PetService.update_weight(@pet, pet_params[:weight])
+    result = Integrations::Pets::PetService.update_weight(@pet, pet_params[:weight])
 
     if result[:success]
       render json: result[:pet], serializer: PetSerializer, status: :ok
@@ -38,14 +37,14 @@ class PetsController < ApplicationController
   end
 
   def destroy
-    Integrations::PetsIntegration::PetService.destroy(@pet)
-    render json: { message: 'Pet deleted successfully' }, status: :ok
+    Integrations::Pets::PetService.destroy(@pet)
+    render json: { message: I18n.t('pets.messages.pet_deleted') }, status: :ok
   end
 
   private
 
   def set_pet
-    @pet = Integrations::PetsIntegration::PetService.find(params[:id])
+    @pet = Integrations::Pets::PetService.find(params[:id])
   end
 
   def pet_params

@@ -1,0 +1,17 @@
+pt-BR:
+  pets:
+    messages:
+      breed_info_missing: "Não temos informações sobre esta raça."
+      pet_deleted: "Pet deletado com sucesso."
+    errors:
+      creation_failed: "Falha na criação do pet."
+      update_failed: "Falha na atualização do pet."
+  owners:
+    messages:
+      owner_created: "owner criado com sucesso."
+      owner_updated: "owner atualizado com sucesso."
+      owner_deleted: "owner deletado com sucesso."
+    errors:
+      creation_failed: "Falha na criação do owner."
+      update_failed: "Falha na atualização do owner."
+      deletion_failed: "Falha na deleção do owner."

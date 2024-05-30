@@ -1,5 +1,5 @@
 class OwnersController < ApplicationController
-  before_action :set_owner, only: [:show, :update]
+  before_action :set_owner, only: [:show, :update, :destroy]
 
   def index
     owners = owner_service.fetch_all
@@ -16,7 +16,7 @@ class OwnersController < ApplicationController
     if result[:success]
       render json: result[:owner], serializer: OwnerSerializer, status: :created
     else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
+      render json: { errors: result[:errors], message: I18n.t('owners.errors.creation_failed') }, status: :unprocessable_entity
     end
   end
 
@@ -26,16 +26,17 @@ class OwnersController < ApplicationController
     if result[:success]
       render json: result[:owner], serializer: OwnerSerializer
     else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
+      render json: { errors: result[:errors], message: I18n.t('owners.errors.update_failed') }, status: :unprocessable_entity
     end
   end
+
   def destroy
-    result = owner_service.update(@owner, owner_params)
+    result = owner_service.destroy(@owner)
 
     if result[:success]
-      render json: result[:owner], serializer: OwnerSerializer
+      render json: { message: I18n.t('owners.messages.owner_deleted') }, status: :ok
     else
-      render json: { errors: result[:errors] }, status: :unprocessable_entity
+      render json: { errors: result[:errors], message: I18n.t('owners.errors.deletion_failed') }, status: :unprocessable_entity
     end
   end
 
@@ -50,6 +51,6 @@ class OwnersController < ApplicationController
   end
 
   def owner_service
-    @owner_service ||= Integrations::OwnersIntegration::OwnerService.new
+    @owner_service ||= Integrations::Owners::OwnerService.new
   end
 end

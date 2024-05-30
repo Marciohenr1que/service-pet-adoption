@@ -1,5 +1,5 @@
 module Integrations
-    module PetsIntegration
+    module Pets
 
 class PetService
     def self.fetch_all

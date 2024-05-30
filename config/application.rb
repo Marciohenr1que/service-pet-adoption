@@ -7,7 +7,7 @@ Bundler.require(*Rails.groups)
 module PetAdoption
   class Application < Rails::Application
     config.load_defaults 7.1
-
+    config.i18n.default_locale = :'pt-BR'
     # Load custom code from the lib directory
     config.autoload_paths << Rails.root.join('lib')
 
